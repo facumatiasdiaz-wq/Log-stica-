@@ -683,8 +683,10 @@
       return '<option value="' + escapeHtml(r.numPed) + '">' + escapeHtml(r.producto) + ' — pendiente ' + fmt(r.pendiente) + '</option>';
     }).join('');
 
-    pedidosAbiertosCache = pedidosAbiertos;
-    updateNumpedHint();
+    pedidosAbiertos.sort(function(a,b){
+  return a.numPed.localeCompare(b.numPed, undefined, {numeric:true, sensitivity:'base'}) ||
+    a.producto.localeCompare(b.producto, undefined, {sensitivity:'base'});
+});
 
     var totalNeto = rows.reduce(function(s,r){ return s + r.pendiente; }, 0);
     var faltanteCount = rows.filter(function(r){ return r.pendiente > 0; }).length;
